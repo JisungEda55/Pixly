@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixly Streaming</title>
+    <style>
+        @font-face {
+            font-family: 'LINESeedKR-Bd';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/LINESeedKR-Bd.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'LINESeedKR-Bd', Arial, sans-serif; /* Apply custom font */
+            background-color: #0e0e10;
+            color: #ffffff;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background-color: #1c1c1f;
+            padding: 20px;
+            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar .logo {
+            margin-bottom: 20px;
+            text-align: left; /* Center the logo */
+        }
+
+        .sidebar .logo img {
+            width: 100%; /* Make the logo responsive */
+            max-width: 100px; /* Set a max width for the logo */
+        }
+
+        .sidebar .profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px; /* Space below profile */
+        }
+
+        .sidebar .profile img {
+            width: 40px; /* Set a fixed size for profile image */
+            height: 40px;
+            border-radius: 50%; /* Make profile image round */
+            margin-right: 10px; /* Space between image and text */
+        }
+
+        .sidebar .profile span {
+            font-size: 14px; /* Font size for profile text */
+            color: #ffffff; /* White text color */
+        }
+
+        /* Line Separator */
+        .separator {
+            border-top: 1px solid #3b3b3f; /* Line color */
+            margin: 10px 0; /* Space around the line */
+        }
+
+        .sidebar .channel-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .sidebar .channel-list li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .sidebar .channel-list img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .sidebar .channel-list span {
+            font-size: 14px;
+        }
+
+        .sidebar .channel-list .viewers {
+            margin-left: auto;
+            color: #fc3c1c;
+            font-size: 12px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .main-content .search-bar {
+            display: flex;
+            justify-content: left; /* Center the search bar */
+            margin-bottom: 20px;
+        }
+
+        .main-content .search-bar input {
+            width: 300px; /* Set a fixed width */
+            padding: 8px;
+            background-color: #464649;
+            border: none;
+            border-radius: 4px;
+            color: #ffffff;
+        }
+
+        .main-content .featured-streams {
+            display: flex;
+            margin-bottom: 20px;
+            overflow-x: auto; /* Allow horizontal scrolling on smaller screens */
+        }
+
+        .main-content .featured-streams .stream-card {
+            background-color: #1f1f23;
+            margin-right: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex: 1;
+            max-width: 350px;
+            transition: transform 0.2s; /* Transition for scaling effect */
+        }
+
+        .main-content .featured-streams .stream-card:hover {
+            transform: scale(1.05); /* Scale effect on hover */
+        }
+
+        .main-content .featured-streams .stream-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .main-content .featured-streams .stream-card .stream-info {
+            padding: 10px;
+        }
+
+        .main-content .featured-streams .stream-card .stream-info h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .main-content .featured-streams .stream-card .stream-info p {
+            margin: 5px 0;
+            color: #b3b3b3;
+            font-size: 12px;
+        }
+
+        /* Popular Categories */
+        .main-content .popular-categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .main-content .popular-categories .category-card {
+            background-color: #1f1f23;
+            width: 160px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.2s; /* Transition for scaling effect */
+        }
+
+        .main-content .popular-categories .category-card:hover {
+            transform: scale(1.05); /* Scale effect on hover */
+        }
+
+        .main-content .popular-categories .category-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .main-content .popular-categories .category-card .category-info {
+            padding: 10px;
+        }
+
+        .main-content .popular-categories .category-card .category-info h4 {
+            margin: 0;
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        .main-content .popular-categories .category-card .category-info p {
+            margin: 5px 0;
+            color: #b3b3b3;
+            font-size: 12px;
+        }
+
+        /* Media Queries for Mobile Devices */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px; /* Adjust sidebar width */
+                padding: 10px; /* Reduce padding */
+            }
+
+            .main-content {
+                margin-left: 220px; /* Adjust margin for main content */
+                padding: 10px; /* Reduce padding */
+            }
+
+            .main-content .search-bar {
+                justify-content: center; /* Center search bar on mobile */
+                margin-bottom: 15px; /* Adjust margin */
+            }
+
+            .main-content .search-bar input {
+                width: 100%; /* Full width for input on mobile */
+                padding: 6px; /* Adjust padding */
+            }
+
+            .main-content .featured-streams {
+                flex-direction: column; /* Stack stream cards vertically */
+                align-items: center; /* Center stream cards */
+            }
+
+            .main-content .featured-streams .stream-card {
+                max-width: 100%; /* Full width for stream cards */
+                margin-bottom: 15px; /* Add space between cards */
+            }
+
+            .main-content .popular-categories {
+                justify-content: center; /* Center categories on mobile */
+            }
+
+            .main-content .popular-categories .category-card {
+                width: 120px; /* Adjust category card width */
+                margin: 10px; /* Space around category cards */
+            }
+        }
+
+        /* Additional Media Query for Small Devices */
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 180px; /* Further adjust sidebar for smaller screens */
+            }
+
+            .main-content {
+                margin-left: 200px; /* Further adjust margin */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="https://i.postimg.cc/9FSxJ8KB/Pixlyo.png" alt="Pixly Logo">
+        </div>
+        <div class="profile">
+            <img src="https://i.postimg.cc/NMzHT32m/Profile-A2.png" alt="User Profile">
+            <span>JisungEda55</span>
+        </div>
+        <div class="separator"></div> <!-- Line separator -->
+        <ul class="channel-list">
+            <li>
+                <img src="https://i.postimg.cc/c4j3VVsr/img-default-user.png" alt="Profile">
+                <span>David Johnson</span>
+                <span class="viewers">23</span>
+            </li>
+            <li>
+                <img src="https://i.postimg.cc/c4j3VVsr/img-default-user.png" alt="Profile">
+                <span>William Smith</span>
+                <span class="viewers">94</span>
+            </li>
+            <li>
+                <img src="https://i.postimg.cc/c4j3VVsr/img-default-user.png" alt="Profile">
+                <span>Olivia Jones</span>
+                <span class="viewers">8.42K</span>
+            </li>
+            <li>
+                <img src="https://i.postimg.cc/c4j3VVsr/img-default-user.png" alt="Profile">
+                <span>James Brown</span>
+                <span class="viewers">265</span>
+            </li>
+            <li>
+                <img src="https://i.postimg.cc/c4j3VVsr/img-default-user.png" alt="Profile">
+                <span>Sophia Garcia</span>
+                <span class="viewers">3.65K</span>
+            </li>
+            <li>
+                <img src="https://i.postimg.cc/c4j3VVsr/img-default-user.png" alt="Profile">
+                <span>Anderson Bill</span>
+                <span class="viewers">136</span>
+            </li>
+            <li>
+                <img src="https://i.postimg.cc/c4j3VVsr/img-default-user.png" alt="Profile">
+                <span>RocketMan</span>
+                <span class="viewers">1.09K</span>
+            </li>
+            <li>
+                <img src="https://i.postimg.cc/c4j3VVsr/img-default-user.png" alt="Profile">
+                <span>Jordan Miller</span>
+                <span class="viewers">12.78K</span>
+            </li>
+            <li>
+                <img src="https://i.postimg.cc/c4j3VVsr/img-default-user.png" alt="Profile">
+                <span>Taylor Nio</span>
+                <span class="viewers">157</span>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+        </div>
+      <div class="featured-streams">
+            <div class="stream-card">
+                <img src="https://i.postimg.cc/PxDbrV9y/STTML.png" alt="Stream Thumbnail">
+                <div class="stream-info">
+                    <h3>James Sullivan</h3>
+                    <p>Just Chatting</p>
+                    <p>Viewers: 94</p>
+                </div>
+            </div>
+            <div class="stream-card">
+                <img src="https://i.postimg.cc/PxDbrV9y/STTML.png" alt="Stream Thumbnail">
+                <div class="stream-info">
+                    <h3>Felonius Gru</h3>
+                    <p>GTA6</p>
+                    <p>Viewers: 3.65K</p>
+                </div>
+       </div>
+            <div class="stream-card">
+                <img src="https://i.postimg.cc/PxDbrV9y/STTML.png" alt="Stream Thumbnail">
+                <div class="stream-info">
+                    <h3>Zelda Green</h3>
+                    <p>Genshin Impact</p>
+                    <p>Viewers: 3.65K</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>실시간 인기 카테고리</h2>
+        <div class="popular-categories">
+            <div class="category-card">
+                <img src="https://ssl.pstatic.net/static/nng/glive/icon/category_poster_talk.png" alt="Category Thumbnail">
+                <div class="category-info">
+                    <h4>소통</h4>
+                    <p>Viewers: 28.73M</p>
+                </div>
+            </div>
+            <div class="category-card">
+                <img src="https://ssl.pstatic.net/static/nng/glive/icon/category_poster_various_games.png" alt="Category Thumbnail">
+                <div class="category-info">
+                    <h4>종합 게임</h4>
+                    <p>Viewers: 24.26M</p>
+                </div>
+            </div>
+            <div class="category-card">
+                <img src="https://ssl.pstatic.net/static/nng/glive/icon/category_poster_music.png" alt="Category Thumbnail">
+                <div class="category-info">
+                    <h4>음악</h4>
+                    <p>Viewers: 16.62M</p>
+                </div>
+            </div>
+            <div class="category-card">
+                <img src="https://ssl.pstatic.net/static/nng/glive/icon/category_poster_art.png" alt="Category Thumbnail">
+                <div class="category-info">
+                    <h4>그림</h4>
+                    <p>Viewers: 13.68M</p>
+                </div>
+            </div>
+            <div class="category-card">
+                <img src="https://ssl.pstatic.net/static/nng/glive/icon/category_poster_travel_camping.png" alt="Category Thumbnail">
+                <div class="category-info">
+                    <h4>여행/캠핑</h4>
+                    <p>Viewers: 11.5M</p>
+                </div>
+            </div>
+            <div class="category-card">
+                <img src="https://ssl.pstatic.net/static/nng/glive/icon/category_poster_classic_game.png" alt="Category Thumbnail">
+                <div class="category-info">
+                    <h4>클래식 게임</h4>
+                    <p>Viewers: 8.41M</p>
+                </div>
+            </div>
+            <div class="category-card">
+                <img src="https://ssl.pstatic.net/static/nng/glive/icon/category_poster_demo_game.png" alt="Category Thumbnail">
+                <div class="category-info">
+                    <h4>데모 게임</h4>
+                    <p>Viewers: 3K</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
