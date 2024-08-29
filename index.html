@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixly Streaming</title>
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/253qhjmS/PXLYFA1.webp">
     <style>
         @font-face {
             font-family: 'LINESeedKR-Bd';
@@ -204,58 +205,74 @@
             font-size: 12px;
         }
 
-        /* Media Queries for Mobile Devices */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 200px; /* Adjust sidebar width */
-                padding: 10px; /* Reduce padding */
-            }
+        /* Mobile Media Queries */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px; /* Adjust sidebar width */
+        padding: 10px; /* Reduce padding */
+        position: fixed; /* Keep sidebar fixed */
+    }
 
-            .main-content {
-                margin-left: 220px; /* Adjust margin for main content */
-                padding: 10px; /* Reduce padding */
-            }
+    .main-content {
+        margin-left: 240px; /* Adjust margin for main content */
+        padding: 10px; /* Reduce padding */
+    }
 
-            .main-content .search-bar {
-                justify-content: center; /* Center search bar on mobile */
-                margin-bottom: 15px; /* Adjust margin */
-            }
+    .main-content .search-bar {
+        justify-content: center; /* Center search bar on mobile */
+        margin-bottom: 15px; /* Adjust margin */
+    }
 
-            .main-content .search-bar input {
-                width: 100%; /* Full width for input on mobile */
-                padding: 6px; /* Adjust padding */
-            }
+    .main-content .search-bar input {
+        width: 90%; /* Full width for input on mobile */
+        padding: 6px; /* Adjust padding */
+    }
 
-            .main-content .featured-streams {
-                flex-direction: column; /* Stack stream cards vertically */
-                align-items: center; /* Center stream cards */
-            }
+    .main-content .featured-streams {
+        flex-direction: column; /* Stack stream cards vertically */
+        align-items: center; /* Center stream cards */
+    }
 
-            .main-content .featured-streams .stream-card {
-                max-width: 100%; /* Full width for stream cards */
-                margin-bottom: 15px; /* Add space between cards */
-            }
+    .main-content .featured-streams .stream-card {
+        max-width: 90%; /* Full width for stream cards */
+        margin-bottom: 15px; /* Add space between cards */
+    }
 
-            .main-content .popular-categories {
-                justify-content: center; /* Center categories on mobile */
-            }
+    .main-content .popular-categories {
+        justify-content: center; /* Center categories on mobile */
+    }
 
-            .main-content .popular-categories .category-card {
-                width: 120px; /* Adjust category card width */
-                margin: 10px; /* Space around category cards */
-            }
-        }
+    .main-content .popular-categories .category-card {
+        width: 120px; /* Adjust category card width */
+        margin: 10px; /* Space around category cards */
+    }
+}
 
-        /* Additional Media Query for Small Devices */
-        @media (max-width: 480px) {
-            .sidebar {
-                width: 180px; /* Further adjust sidebar for smaller screens */
-            }
+/* Additional Media Query for Small Devices */
+@media (max-width: 480px) {
+    .sidebar {
+        width: 160px; /* Further adjust sidebar for smaller screens */
+        padding: 8px; /* Further reduce padding */
+    }
 
-            .main-content {
-                margin-left: 200px; /* Further adjust margin */
-            }
-        }
+    .main-content {
+        margin-left: 200px; /* Further adjust margin */
+        padding: 8px; /* Further reduce padding */
+    }
+
+    .main-content .search-bar input {
+        width: 100%; /* Full width for input on very small screens */
+        padding: 5px; /* Adjust padding */
+    }
+
+    .main-content .featured-streams .stream-card {
+        max-width: 95%; /* Adjust card width for small screens */
+    }
+
+    .main-content .popular-categories .category-card {
+        width: 100px; /* Adjust category card width for smaller screens */
+    }
+}
     </style>
 </head>
 <body>
@@ -321,7 +338,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="search-bar">
-            <input type="text" placeholder="Search">
+            <input type="text" placeholder="Search for channels or streams...">
         </div>
       <div class="featured-streams">
             <div class="stream-card">
