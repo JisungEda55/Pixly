@@ -420,5 +420,23 @@
             </div>
         </div>
     </div>
+
+    <!-- JavaScript 코드 삽입 -->
+    <script>
+        const searchInput = document.querySelector('.search-bar input');
+        const streamCards = document.querySelectorAll('.stream-card');
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            streamCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
